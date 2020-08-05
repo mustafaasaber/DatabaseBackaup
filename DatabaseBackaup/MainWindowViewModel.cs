@@ -60,13 +60,9 @@ namespace DatabaseBackaup
 
 
 
-
+        
 
         #region Commands
-
-
-
-
 
         public ICommand StartPackingCommand { get { return _StartPackingCommand ?? (_StartPackingCommand = new DelegateCommand(StartPackingMethod, canBackup)); } }
         private DelegateCommand _StartPackingCommand;
