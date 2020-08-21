@@ -64,7 +64,7 @@ namespace DatabaseBackaup
 
         #region Commands
 
-        public ICommand StartPackingCommand { get { return _StartPackingCommand ?? (_StartPackingCommand = new DelegateCommand(StartPackingMethod, canBackup)); } }
+        public DelegateCommand StartPackingCommand { get { return _StartPackingCommand ?? (_StartPackingCommand = new DelegateCommand(StartPackingMethod, canBackup)); } }
         private DelegateCommand _StartPackingCommand;
 
         async void StartPackingMethod()
@@ -72,7 +72,7 @@ namespace DatabaseBackaup
             await Task.Factory.StartNew(() =>
             {
                 IsBacking = true;
-               
+                StartPackingCommand.RaiseCanExecuteChanged();
                 foreach (var item in BackupList)
                 {
                     item.BackedupState = BackupState.started;
@@ -81,6 +81,8 @@ namespace DatabaseBackaup
                 }
 
                 IsBacking = false;
+                StartPackingCommand.RaiseCanExecuteChanged();
+
             });
         }
         public bool IsBacking { get; set; } = false;
